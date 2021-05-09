@@ -21,14 +21,21 @@ def write_state(name, state_position):
 
 all_states = states_data.state
 states_list = all_states.to_list()
-print(len(states_list))
 guessed_states = []
 
 
 while len(guessed_states) != len(states_list):
     answer_state = screen.textinput(title=f"{len(guessed_states)}/50 correct", prompt="What's the state name?")
     title_case_answer = answer_state.title()
+    if answer_state == "exit":
+        states_to_learn_list = []
+        for state in states_list:
+            if state not in guessed_states:
+                states_to_learn_list.append(state)
 
+        states_to_learn = pandas.DataFrame(states_to_learn_list)
+        states_to_learn.to_csv("states_to_learn.csv")
+        break
     if title_case_answer in states_list:
 
         selected_state = states_data[states_data.state == title_case_answer]
@@ -40,4 +47,3 @@ while len(guessed_states) != len(states_list):
         guessed_states.append(title_case_answer)
 
 
-screen.mainloop()
